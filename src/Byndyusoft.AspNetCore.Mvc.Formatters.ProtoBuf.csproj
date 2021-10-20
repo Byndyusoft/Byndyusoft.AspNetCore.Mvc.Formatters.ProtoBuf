@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RootNamespace>Microsoft.AspNetCore.Mvc</RootNamespace>
+    <Version>0.1.0</Version>
+    <PackageId>Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf</PackageId>
+    <Title>Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf</Title>
+    <Authors>Byndyusoft</Authors>
+    <Description>ASP.NET Core MVC formatters for ProtoBuf input and output.</Description>
+    <PackageTags>Byndyusoft;AspNet;AspNetCore;Mvc;Formatters;ProtoBuf</PackageTags>
+    <RepositoryUrl>https://github.com/Byndyusoft/Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Byndyusoft.Net.Http.ProtoBuf" Version="0.2.0" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
+  </ItemGroup>
+
+</Project>

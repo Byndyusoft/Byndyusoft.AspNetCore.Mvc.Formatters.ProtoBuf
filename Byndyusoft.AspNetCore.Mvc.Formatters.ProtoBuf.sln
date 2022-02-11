@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		CONTRIBUTING.md = CONTRIBUTING.md
+		Directory.Build.props = Directory.Build.props
 		icon.png = icon.png
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
@@ -28,6 +29,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ACB46CD6-6A02-4D2A-8216-15FD9F5AAA1F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf.Tests", "tests\Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf.Tests.csproj", "{545428E8-4758-45ED-9CED-6AD9ACF3467F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{8AAFFD9A-0394-4AC5-AE3F-7EBA9356249C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf.Example", "example\Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf.Example.csproj", "{4ADEE941-B9D1-400D-A89B-0788B47E5B84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +48,10 @@ Global
 		{545428E8-4758-45ED-9CED-6AD9ACF3467F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{545428E8-4758-45ED-9CED-6AD9ACF3467F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{545428E8-4758-45ED-9CED-6AD9ACF3467F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ADEE941-B9D1-400D-A89B-0788B47E5B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ADEE941-B9D1-400D-A89B-0788B47E5B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ADEE941-B9D1-400D-A89B-0788B47E5B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ADEE941-B9D1-400D-A89B-0788B47E5B84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +60,7 @@ Global
 		{41FFDBC3-9646-430E-B59B-7BC96DCC8BAE} = {AC624869-1C4F-488E-801F-7F544A4C2703}
 		{49CFFFAB-A997-4470-89C4-631F82191CF0} = {DEB37731-B64D-4904-945E-027A19A6428A}
 		{545428E8-4758-45ED-9CED-6AD9ACF3467F} = {ACB46CD6-6A02-4D2A-8216-15FD9F5AAA1F}
+		{4ADEE941-B9D1-400D-A89B-0788B47E5B84} = {8AAFFD9A-0394-4AC5-AE3F-7EBA9356249C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4B91B17D-D238-45B0-9CBA-A29DCCEAF877}

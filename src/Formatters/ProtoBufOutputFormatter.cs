@@ -16,11 +16,19 @@ namespace Microsoft.AspNetCore.Mvc.Formatters
         /// <param name="options">The <see cref="MvcProtoBufOptions" />.</param>
         public ProtoBufOutputFormatter(MvcProtoBufOptions options)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
-
+            Guard.NotNull(options, nameof(options));
+            
             TypeModel = options.TypeModel;
 
             foreach (var mediaType in options.SupportedMediaTypes) SupportedMediaTypes.Add(mediaType);
+        }
+
+        internal ProtoBufOutputFormatter(TypeModel typeModel)
+        {
+            TypeModel = Guard.NotNull(typeModel, nameof(typeModel));
+
+            SupportedMediaTypes.Add(ProtoBufDefaults.MediaTypes.ApplicationProtoBuf);
+            SupportedMediaTypes.Add(ProtoBufDefaults.MediaTypes.ApplicationXProtoBuf);
         }
 
         /// <summary>
@@ -33,18 +41,19 @@ namespace Microsoft.AspNetCore.Mvc.Formatters
         public TypeModel TypeModel { get; }
 
         /// <inheritdoc />
-        protected override bool CanWriteType(Type type)
+        protected override bool CanWriteType(Type? type)
         {
-            return base.CanWriteType(type) && !type.IsAbstract && !type.IsInterface;
+            return type == null || base.CanWriteType(type) && !type.IsAbstract && !type.IsInterface && TypeModel.CanSerialize(type);
         }
 
         /// <inheritdoc />
         public override async Task WriteResponseBodyAsync(OutputFormatterWriteContext context)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
+            Guard.NotNull(context, nameof(context));
 
-            using var content = ProtoBufContent.Create(context.Object, context.ObjectType, TypeModel);
+            await using var content = ProtoBufContent.Create(context.ObjectType ?? typeof(string), context.Object, TypeModel);
             await content.CopyToAsync(context.HttpContext.Response.Body).ConfigureAwait(false);
+            context.HttpContext.Response.Headers.ContentLength = content.Headers.ContentLength;
         }
     }
 }

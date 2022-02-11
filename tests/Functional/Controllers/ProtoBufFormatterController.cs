@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Byndyusoft.AspNetCore.Mvc.Formatters.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional.Controllers
 {
@@ -9,7 +10,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional.Controllers
         [HttpPost]
         [Route("echo")]
         [FormatFilter]
-        public object Echo([FromBody] object model)
+        public SimpleModel Echo([FromBody] SimpleModel model)
         {
             return model;
         }

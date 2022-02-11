@@ -1,7 +1,10 @@
 ﻿// ReSharper disable CheckNamespace
 
 using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.DependencyInjection;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
@@ -19,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="IMvcBuilder" />.</returns>
         public static IMvcBuilder AddProtoBufFormatters(this IMvcBuilder builder)
         {
-            if (builder == null) throw new ArgumentNullException(nameof(builder));
+            Guard.NotNull(builder, nameof(builder));
 
             AddProtoBufFormatterServices(builder.Services);
             return builder;
@@ -34,8 +37,8 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IMvcBuilder AddProtoBufFormatters(this IMvcBuilder builder,
             Action<MvcProtoBufOptions> setupAction)
         {
-            if (builder == null) throw new ArgumentNullException(nameof(builder));
-            if (setupAction == null) throw new ArgumentNullException(nameof(setupAction));
+            Guard.NotNull(builder, nameof(builder));
+            Guard.NotNull(setupAction, nameof(setupAction));
 
             builder.Services.Configure(setupAction);
 
@@ -49,7 +52,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="IMvcCoreBuilder" />.</returns>
         public static IMvcCoreBuilder AddProtoBufFormatters(this IMvcCoreBuilder builder)
         {
-            if (builder == null) throw new ArgumentNullException(nameof(builder));
+            Guard.NotNull(builder, nameof(builder));
 
             AddProtoBufFormatterServices(builder.Services);
             return builder;
@@ -64,8 +67,8 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IMvcCoreBuilder AddProtoBufFormatters(this IMvcCoreBuilder builder,
             Action<MvcProtoBufOptions> setupAction)
         {
-            if (builder == null) throw new ArgumentNullException(nameof(builder));
-            if (setupAction == null) throw new ArgumentNullException(nameof(setupAction));
+            Guard.NotNull(builder, nameof(builder));
+            Guard.NotNull(setupAction, nameof(setupAction));
 
             builder.Services.Configure(setupAction);
 
@@ -77,9 +80,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddEnumerable(
                 ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, MvcProtoBufOptionsSetup>());
             services.TryAddEnumerable(
-                ServiceDescriptor
-                    .Transient<IPostConfigureOptions<MvcProtoBufOptions>,
-                        MvcProtoBufOptionsConfigureCompatibilityOptions>());
+                ServiceDescriptor.Transient<IConfigureOptions<KestrelServerOptions>, KestrelServerOptionsSetup>());
+            services.TryAddEnumerable(
+                ServiceDescriptor.Transient<IConfigureOptions<IISServerOptions>, IISServerOptionsSetup>());
         }
     }
 }

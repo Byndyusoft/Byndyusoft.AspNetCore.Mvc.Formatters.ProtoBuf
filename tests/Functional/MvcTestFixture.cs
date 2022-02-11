@@ -13,8 +13,8 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional
     public abstract class MvcTestFixture : IDisposable
     {
         private readonly string _url;
-        private HttpClient _client;
-        private IHost _host;
+        private HttpClient? _client;
+        private IHost? _host;
 
         protected MvcTestFixture()
         {

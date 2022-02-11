@@ -1,12 +1,9 @@
-﻿// ReSharper disable CheckNamespace
-
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.AspNetCore.Mvc.DependencyInjection
 {
     /// <summary>
     ///     A <see cref="IConfigureOptions{TOptions}" /> implementation which will add the
@@ -28,10 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
             _options = options.Value;
         }
 
-        /// <summary>
-        ///     Adds the ProtoBuf serializer formatters to <see cref="MvcOptions" />.
-        /// </summary>
-        /// <param name="options">The <see cref="MvcOptions" />.</param>
+        /// <inheritdoc />
         public void Configure(MvcOptions options)
         {
             ConfigureFormatters(options);

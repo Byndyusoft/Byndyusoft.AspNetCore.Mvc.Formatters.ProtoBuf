@@ -42,14 +42,15 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
 
         [Theory]
         [InlineData(typeof(int), true)]
-        [InlineData(typeof(Class), true)]
-        [InlineData(typeof(Struct), true)]
+        [InlineData(typeof(NonContractType), false)]
+        [InlineData(typeof(ContractType), true)]
         [InlineData(typeof(Abstract), false)]
         [InlineData(typeof(IInterface), false)]
+        [InlineData(typeof(DataContractType), true)]
         public void CanWriteResult(Type type, bool expected)
         {
             // Arrange
-            var context = CreateContext(type, null);
+            var context = CreateContext(type, null!);
 
             // Act
             var result = _formatter.CanWriteResult(context);
@@ -63,7 +64,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
         {
             // Act
             var exception =
-                await Assert.ThrowsAsync<ArgumentNullException>(() => _formatter.WriteResponseBodyAsync(null));
+                await Assert.ThrowsAsync<ArgumentNullException>(() => _formatter.WriteResponseBodyAsync(null!));
 
             // Assert
             Assert.Equal("context", exception.ParamName);
@@ -73,7 +74,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
         public async Task WriteResponseBodyAsync_WritesNullModel()
         {
             // Arrange
-            var context = CreateContext(typeof(object), null);
+            var context = CreateContext(typeof(string), null!);
 
             // Act
             await _formatter.WriteResponseBodyAsync(context);
@@ -112,13 +113,13 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
             model.Verify();
         }
 
-        private object ReadModel(Type modelType, OutputFormatterWriteContext context)
+        private object? ReadModel(Type modelType, OutputFormatterWriteContext context)
         {
             if (context.HttpContext.Response.Body.Length == 0)
                 return null;
 
             context.HttpContext.Response.Body.Position = 0;
-            return _typeModel.Deserialize(modelType, context.HttpContext.Response.Body);
+            return _typeModel.Deserialize(context.HttpContext.Response.Body,null, modelType);
         }
 
         private OutputFormatterWriteContext CreateContext(Type modelType, object model)

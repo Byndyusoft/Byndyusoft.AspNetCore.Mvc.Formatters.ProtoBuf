@@ -29,7 +29,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit.DependencyInjection
 
             // Act
             // ReSharper disable once ExpressionIsAlwaysNull
-            var exception = Assert.Throws<ArgumentNullException>(() => builder.AddProtoBufFormatters());
+            var exception = Assert.Throws<ArgumentNullException>(() => builder!.AddProtoBufFormatters());
 
             // Assert
             Assert.Equal("builder", exception.ParamName);
@@ -56,11 +56,11 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit.DependencyInjection
         public void AddProtoBufFormatters_IMvcBuilder_Options()
         {
             // Act
-            _mvcBuilder.AddProtoBufFormatters(msgpack =>
+            _mvcBuilder.AddProtoBufFormatters(protobuf =>
             {
-                msgpack.SupportedMediaTypes.Clear();
-                msgpack.SupportedMediaTypes.Add("application/mediatype");
-                msgpack.MediaTypeFormat = "format";
+                protobuf.SupportedMediaTypes.Clear();
+                protobuf.SupportedMediaTypes.Add("application/mediatype");
+                protobuf.MediaTypeFormat = "format";
             });
             var mvcOptions = _serviceCollection.BuildServiceProvider().GetService<IOptions<MvcOptions>>().Value;
 
@@ -87,7 +87,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit.DependencyInjection
             // Act
             // ReSharper disable once ExpressionIsAlwaysNull
             var exception =
-                Assert.Throws<ArgumentNullException>(() => builder.AddProtoBufFormatters(options => { }));
+                Assert.Throws<ArgumentNullException>(() => builder!.AddProtoBufFormatters(options => { }));
 
             // Assert
             Assert.Equal("builder", exception.ParamName);
@@ -97,7 +97,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit.DependencyInjection
         public void AddProtoBufFormatters_IMvcBuilder_Options_NullOptions_ThrowsException()
         {
             // Act
-            var exception = Assert.Throws<ArgumentNullException>(() => _mvcBuilder.AddProtoBufFormatters(null));
+            var exception = Assert.Throws<ArgumentNullException>(() => _mvcBuilder.AddProtoBufFormatters(null!));
 
             // Assert
             Assert.Equal("setupAction", exception.ParamName);
@@ -111,7 +111,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit.DependencyInjection
 
             // Act
             // ReSharper disable once ExpressionIsAlwaysNull
-            var exception = Assert.Throws<ArgumentNullException>(() => builder.AddProtoBufFormatters());
+            var exception = Assert.Throws<ArgumentNullException>(() => builder!.AddProtoBufFormatters());
 
             // Assert
             Assert.Equal("builder", exception.ParamName);
@@ -138,11 +138,11 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit.DependencyInjection
         public void AddProtoBufFormatters_IMvcCoreBuilder_Options()
         {
             // Act
-            _mvcCoreBuilder.AddProtoBufFormatters(msgpack =>
+            _mvcCoreBuilder.AddProtoBufFormatters(protobuf =>
             {
-                msgpack.SupportedMediaTypes.Clear();
-                msgpack.SupportedMediaTypes.Add("application/mediatype");
-                msgpack.MediaTypeFormat = "format";
+                protobuf.SupportedMediaTypes.Clear();
+                protobuf.SupportedMediaTypes.Add("application/mediatype");
+                protobuf.MediaTypeFormat = "format";
             });
             var mvcOptions = _serviceCollection.BuildServiceProvider().GetService<IOptions<MvcOptions>>().Value;
 
@@ -169,7 +169,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit.DependencyInjection
             // Act
             // ReSharper disable once ExpressionIsAlwaysNull
             var exception =
-                Assert.Throws<ArgumentNullException>(() => builder.AddProtoBufFormatters(options => { }));
+                Assert.Throws<ArgumentNullException>(() => builder!.AddProtoBufFormatters(options => { }));
 
             // Assert
             Assert.Equal("builder", exception.ParamName);
@@ -179,7 +179,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit.DependencyInjection
         public void AddProtoBufFormatters_IMvcCoreBuilder_Options_NullOptions_ThrowsException()
         {
             // Act
-            var exception = Assert.Throws<ArgumentNullException>(() => _mvcCoreBuilder.AddProtoBufFormatters(null));
+            var exception = Assert.Throws<ArgumentNullException>(() => _mvcCoreBuilder.AddProtoBufFormatters(null!));
 
             // Assert
             Assert.Equal("setupAction", exception.ParamName);

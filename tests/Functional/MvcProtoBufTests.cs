@@ -10,12 +10,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional
 {
     public class MvcProtoBufTests : MvcTestFixture
     {
-        private readonly TypeModel _typeModel;
-
-        public MvcProtoBufTests()
-        {
-            _typeModel = RuntimeTypeModel.Default;
-        }
+        private static readonly TypeModel TypeModel = RuntimeTypeModel.Default;
 
         protected override void ConfigureHttpClient(HttpClient client)
         {
@@ -24,7 +19,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional
 
         protected override void ConfigureMvc(IMvcCoreBuilder builder)
         {
-            builder.AddProtoBufFormatters(options => { options.TypeModel = _typeModel; });
+            builder.AddProtoBufFormatters(options => { options.TypeModel = TypeModel; });
         }
 
         [Fact]
@@ -32,11 +27,11 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional
         {
             // Act
             var response =
-                await Client.PostAsProtoBufAsync<SimpleModel>("/protobuf-formatter/echo", null, _typeModel);
+                await Client.PostAsProtoBufAsync<SimpleModel>("/protobuf-formatter/echo", null!, TypeModel);
 
             // Asert
             response.EnsureSuccessStatusCode();
-            var model = await response.Content.ReadFromProtoBufAsync<SimpleModel>(_typeModel);
+            var model = await response.Content.ReadFromProtoBufAsync<SimpleModel>(TypeModel);
             Assert.Null(model);
         }
 
@@ -44,11 +39,11 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional
         public async Task PrimitiveType()
         {
             // Act
-            var response = await Client.PostAsProtoBufAsync("/protobuf-formatter/echo", 10, _typeModel);
+            var response = await Client.PostAsProtoBufAsync("/protobuf-formatter/echo", 10, TypeModel);
 
             // Asert
             response.EnsureSuccessStatusCode();
-            var model = await response.Content.ReadFromProtoBufAsync<int>(_typeModel);
+            var model = await response.Content.ReadFromProtoBufAsync<int>(TypeModel);
             Assert.Equal(10, model);
         }
 
@@ -60,11 +55,11 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional
 
             // Act
             var response =
-                await Client.PostAsProtoBufAsync("/protobuf-formatter/echo", simpleType, _typeModel);
+                await Client.PostAsProtoBufAsync("/protobuf-formatter/echo", simpleType, TypeModel);
 
             // Asert
             response.EnsureSuccessStatusCode();
-            var model = await response.Content.ReadFromProtoBufAsync<SimpleModel>(_typeModel);
+            var model = await response.Content.ReadFromProtoBufAsync<SimpleModel>(TypeModel);
             Assert.NotNull(model);
             model.Verify();
         }
@@ -74,7 +69,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional
         {
             // Arrange
             var simpleType = SimpleModel.Create();
-            var content = ProtoBufContent.Create(simpleType, _typeModel);
+            var content = ProtoBufContent.Create(simpleType, TypeModel);
 
             // Act
             Client.DefaultRequestHeaders.Accept.Clear();
@@ -82,7 +77,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional
 
             // Asert
             response.EnsureSuccessStatusCode();
-            var model = await response.Content.ReadFromProtoBufAsync<SimpleModel>(_typeModel);
+            var model = await response.Content.ReadFromProtoBufAsync<SimpleModel>(TypeModel);
             Assert.NotNull(model);
             model.Verify();
         }

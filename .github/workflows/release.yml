@@ -20,12 +20,9 @@ jobs:
           
       - name: build
         run: dotnet build
-
-      - name: test
-        run: dotnet test
         
       - name: publish
-        uses: rohith/publish-nuget@v2
+        uses: alirezanet/publish-nuget@v3.0.0
         with:
           PROJECT_FILE_PATH: src/Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf.csproj
           VERSION_REGEX: ^\s*<Version>(.*)<\/Version>\s*$

@@ -44,21 +44,22 @@ namespace Microsoft.AspNetCore.Mvc.Formatters
             InputFormatterExceptionPolicy.MalformedInputExceptions;
 
         /// <inheritdoc />
-        protected override bool CanReadType(Type type)
+        protected override bool CanReadType(Type? type)
         {
-            return base.CanReadType(type) && !type.IsAbstract && !type.IsInterface;
+            return type == null || base.CanReadType(type) && !type.IsAbstract && !type.IsInterface && TypeModel.CanSerialize(type);
         }
 
         /// <inheritdoc />
         public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
+            Guard.NotNull(context, nameof(context));
 
-            object model;
+            object? model;
 
             try
             {
                 using var content = new StreamContent(context.HttpContext.Request.Body);
+                content.Headers.ContentLength = context.HttpContext.Request.Headers.ContentLength;
                 model = await content.ReadFromProtoBufAsync(context.ModelType, TypeModel)
                     .ConfigureAwait(false);
             }
@@ -79,18 +80,18 @@ namespace Microsoft.AspNetCore.Mvc.Formatters
         private static class Log
         {
             // ReSharper disable InconsistentNaming
-            private static readonly Action<ILogger, string, Exception> _msgpackInputFormatterException;
+            private static readonly Action<ILogger, string, Exception> _protobufInputFormatterException;
 
-            private static readonly Action<ILogger, string, Exception> _msgpackInputSuccess;
+            private static readonly Action<ILogger, string, Exception?> _protobufInputSuccess;
             // ReSharper enable InconsistentNaming
 
             static Log()
             {
-                _msgpackInputFormatterException = LoggerMessage.Define<string>(
+                _protobufInputFormatterException = LoggerMessage.Define<string>(
                     LogLevel.Debug,
                     new EventId(1, "ProtoBufInputException"),
                     "ProtoBuf input formatter threw an exception: {Message}");
-                _msgpackInputSuccess = LoggerMessage.Define<string>(
+                _protobufInputSuccess = LoggerMessage.Define<string>(
                     LogLevel.Debug,
                     new EventId(2, "ProtoBufInputSuccess"),
                     "ProtoBuf input formatter succeeded, deserializing to type '{TypeName}'");
@@ -98,12 +99,12 @@ namespace Microsoft.AspNetCore.Mvc.Formatters
 
             public static void ProtoBufInputException(ILogger logger, Exception exception)
             {
-                _msgpackInputFormatterException(logger, exception.Message, exception);
+                _protobufInputFormatterException(logger, exception.Message, exception);
             }
 
             public static void ProtoBufInputSuccess(ILogger logger, Type modelType)
             {
-                _msgpackInputSuccess(logger, modelType.FullName, null);
+                _protobufInputSuccess(logger, modelType.FullName!, null);
             }
         }
     }

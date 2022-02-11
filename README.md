@@ -10,7 +10,7 @@ Content negotiation occurs when the client specifies an `Accept` header. The def
 ```csharp
 using (var httpClient = new HttpClient())
 {
-	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/msgpack"));
+	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/protobuf"));
 	var response = await client.GetAsync("/api/products/5");
 	var product = response.Content.ReadFromProtoBufAsync<Product>();
 }
@@ -43,7 +43,7 @@ The preceding code serializes results using `ProtoBufSerializer`.
 ## Response format URL mappings
 Clients can request a particular format as part of the URL, for example:
 * In the query string or part of the path.
-* By using a format-specific file extension such as .json or .msgpack.
+* By using a format-specific file extension such as .json or .protobuf.
 
 The mapping from request path should be specified in the route the API is using. For example:
 ```csharp

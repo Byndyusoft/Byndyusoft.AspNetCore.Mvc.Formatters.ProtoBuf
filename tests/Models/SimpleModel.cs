@@ -7,7 +7,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Models
     [ProtoContract]
     public class SimpleModel
     {
-        [ProtoMember(2)] public string Field;
+        [ProtoMember(2)] public string Field = default!;
 
         [ProtoMember(1)] public int Property { get; set; }
 
@@ -15,7 +15,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Models
 
         [ProtoMember(4)] public int? Nullable { get; set; }
 
-        [ProtoMember(5)] public int[] Array { get; set; }
+        [ProtoMember(5)] public int[] Array { get; set; } = default!;
 
         public static SimpleModel Create()
         {

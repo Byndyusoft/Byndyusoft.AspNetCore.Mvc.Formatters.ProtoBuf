@@ -49,10 +49,11 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
 
         [Theory]
         [InlineData(typeof(int), true)]
-        [InlineData(typeof(Class), true)]
-        [InlineData(typeof(Struct), true)]
+        [InlineData(typeof(NonContractType), false)]
+        [InlineData(typeof(ContractType), true)]
         [InlineData(typeof(Abstract), false)]
         [InlineData(typeof(IInterface), false)]
+        [InlineData(typeof(DataContractType), true)]
         public void CanRead(Type type, bool expected)
         {
             // Arrange
@@ -70,7 +71,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
         {
             // Act
             var exception =
-                await Assert.ThrowsAsync<ArgumentNullException>(() => _formatter.ReadRequestBodyAsync(null));
+                await Assert.ThrowsAsync<ArgumentNullException>(() => _formatter.ReadRequestBodyAsync(null!));
 
             // Assert
             Assert.Equal("context", exception.ParamName);
@@ -82,7 +83,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
         public async Task ReadRequestBodyAsync_EmptyInput(bool treatEmptyInputAsDefaultValue)
         {
             // Arrange
-            var context = CreateContext(typeof(SimpleModel), null, treatEmptyInputAsDefaultValue);
+            var context = CreateContext(typeof(SimpleModel), null!, treatEmptyInputAsDefaultValue);
 
             // Act
             var result = await _formatter.ReadRequestBodyAsync(context);
@@ -123,9 +124,11 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
             model.Verify();
         }
 
-        private InputFormatterContext CreateContext(Type modelType, object model = null,
+        private InputFormatterContext CreateContext(Type? modelType, object? model = null,
             bool treatEmptyInputAsDefaultValue = false)
         {
+            modelType ??= typeof(object);
+
             var memoryStream = new MemoryStream();
             if (model != null)
                 _typeModel.Serialize(memoryStream, model);
@@ -135,6 +138,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
             var httpContext = new DefaultHttpContext();
             httpContext.Request.ContentType = ProtoBufDefaults.MediaType;
             httpContext.Request.Body = memoryStream;
+            httpContext.Request.ContentLength = memoryStream.Length;
 
             var modelStateDictionary = new ModelStateDictionary();
             var modelMetadata = new Mock<ModelMetadata>(ModelMetadataIdentity.ForType(modelType)).Object;

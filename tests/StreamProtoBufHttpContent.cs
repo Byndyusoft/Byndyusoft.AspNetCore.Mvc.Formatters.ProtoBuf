@@ -33,7 +33,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters
         public T ReadObject<T>(TypeModel typeModel)
         {
             if (Stream.Length == 0)
-                return default;
+                return default!;
 
             Stream.Position = 0;
             return typeModel.Deserialize<T>(Stream);

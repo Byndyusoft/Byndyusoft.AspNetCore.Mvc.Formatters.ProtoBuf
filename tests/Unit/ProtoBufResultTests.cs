@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Meta;
 using Xunit;
 
@@ -27,7 +28,6 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
 
             // Assert
             Assert.Equal(model, result.Value);
-            Assert.Equal(ProtoBufDefaults.MediaType, result.ContentType);
         }
 
         [Fact]
@@ -42,17 +42,16 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
             // Assert
             Assert.Equal(model, result.Value);
             Assert.Equal(_typeModel, result.TypeModel);
-            Assert.Equal(ProtoBufDefaults.MediaType, result.ContentType);
         }
 
         [Fact]
         public void Constructor_NullOptions_ThrowsException()
         {
             // Act
-            var exception = Assert.ThrowsAny<ArgumentNullException>(() => new ProtoBufResult(10, null));
+            var exception = Assert.ThrowsAny<ArgumentNullException>(() => new ProtoBufResult(10, null!));
 
             // Assert
-            Assert.Equal("serializerOptions", exception.ParamName);
+            Assert.Equal("typeModel", exception.ParamName);
         }
 
         [Fact]
@@ -62,7 +61,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
             var result = new ProtoBufResult(null);
 
             // Act
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => result.ExecuteResultAsync(null));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => result.ExecuteResultAsync(null!));
 
             // Assert
             Assert.Equal("context", exception.ParamName);
@@ -167,29 +166,26 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Unit
             // Assert
             Assert.Equal(10, result.Value);
         }
-
-        [Fact]
-        public void ContentType_Property()
-        {
-            // Arrange
-            var result = new ProtoBufResult(null);
-
-            // Act
-            result.ContentType = "content/type";
-
-            // Assert
-            Assert.Equal("content/type", result.ContentType);
-        }
-
+        
         private T ReadModel<T>(ActionContext context)
         {
             context.HttpContext.Response.Body.Position = 0;
+
+            if (context.HttpContext.Response.Body.Length == 0)
+                return default!;
+            
             return _typeModel.Deserialize<T>(context.HttpContext.Response.Body);
         }
 
         private ActionContext CreateContext()
         {
+            var services = new ServiceCollection();
+            services.AddLogging();
+            services.AddMvc();
+            services.AddMvcCore();
+
             var httpContext = new DefaultHttpContext();
+            httpContext.RequestServices = services.BuildServiceProvider();
             httpContext.Response.Body = new MemoryStream();
             return new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
         }

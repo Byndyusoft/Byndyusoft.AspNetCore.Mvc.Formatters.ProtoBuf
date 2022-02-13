@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 
 namespace Microsoft.AspNetCore.Mvc.DependencyInjection
@@ -11,7 +11,9 @@ namespace Microsoft.AspNetCore.Mvc.DependencyInjection
         /// <inheritdoc />
         public void Configure(IISServerOptions options)
         {
+#if NETCOREAPP
             options.AllowSynchronousIO = true;
+#endif
         }
     }
 }

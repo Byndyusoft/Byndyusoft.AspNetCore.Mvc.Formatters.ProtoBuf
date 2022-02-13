@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
 		<RootNamespace>Microsoft.AspNetCore.Mvc</RootNamespace>
 		<Version>0.1.0</Version>
 		<PackageId>Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf</PackageId>
@@ -16,11 +16,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Server.IIS" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -12,22 +12,23 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional
 {
     public abstract class MvcTestFixture : IDisposable
     {
-        private readonly string _url;
+        private readonly string _url = $"http://localhost:{FreeTcpPort()}";
         private HttpClient? _client;
         private IHost? _host;
 
         protected MvcTestFixture()
         {
-            _url = $"http://localhost:{FreeTcpPort()}";
-            _host =
-                Host.CreateDefaultBuilder()
-                    .ConfigureWebHostDefaults(webBuilder =>
+            _host = Host
+                .CreateDefaultBuilder()
+                .ConfigureWebHostDefaults(
+                    webBuilder =>
                     {
                         webBuilder.UseUrls(_url);
                         webBuilder.ConfigureServices(ConfigureServices);
                         webBuilder.Configure(Configure);
-                    })
-                    .Build();
+                    }
+                )
+                .Build();
             _host.Start();
         }
 
@@ -37,7 +38,11 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional
             {
                 if (_client == null)
                 {
-                    _client = new HttpClient {BaseAddress = new Uri(_url)};
+                    _client = new HttpClient
+                    {
+                        BaseAddress = new Uri(_url),
+                        DefaultRequestVersion = new Version(1, 0)
+                    };
                     ConfigureHttpClient(_client);
                 }
 

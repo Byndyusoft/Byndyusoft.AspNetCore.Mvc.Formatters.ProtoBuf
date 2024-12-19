@@ -77,7 +77,7 @@ A detailed overview on how to contribute can be found in the [contributing guide
 Make sure you have installed all of the following prerequisites on your development machine:
 
 - Git - [Download & Install Git](https://git-scm.com/downloads). OSX and Linux machines typically have this already installed.
-- .NET (version 8.0 or higher) - [Download & Install .NET Core](https://dotnet.microsoft.com/ru-ru/download/dotnet/8.0).
+- .NET (version 8.0 or higher) - [Download & Install .NET Core](https://dotnet.microsoft.com/download/dotnet/8.0).
 
 ## General folders layout
 

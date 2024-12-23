@@ -1,4 +1,5 @@
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Net.Http.ProtoBuf;
 using System.Threading.Tasks;
 using Byndyusoft.AspNetCore.Mvc.Formatters.Models;
@@ -73,7 +74,7 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.Functional
 
             // Act
             Client.DefaultRequestHeaders.Accept.Clear();
-            var response = await Client.PostAsync("/protobuf-formatter/echo?format=protobuf", content);
+            var response = await Client.PostAsync("/protobuf-formatter/echo?format=protobuf", content).ConfigureAwait(true);
 
             // Asert
             response.EnsureSuccessStatusCode();

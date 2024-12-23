@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf.Swagger
@@ -12,10 +13,10 @@ namespace Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf.Swagger
         /// <summary>
         ///     UseSwagger
         /// </summary>
-        public static IApplicationBuilder UseSwagger(
-            this IApplicationBuilder builder,
-            IApiVersionDescriptionProvider apiVersionDescriptionProvider)
+        public static IApplicationBuilder UseSwaggerWithApiVersionDescriptionProvider(
+            this IApplicationBuilder builder)
         {
+            var apiVersionDescriptionProvider = builder.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
             builder.UseSwagger()
                    .UseSwaggerUI(options =>
                    {

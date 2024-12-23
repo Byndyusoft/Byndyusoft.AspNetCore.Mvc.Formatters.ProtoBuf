@@ -4,7 +4,7 @@ ASP.NET Core MVC formatters for ProtoBuf input and output.
 [![(License)](https://img.shields.io/github/license/Byndyusoft/Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf.svg)](LICENSE.txt)
 [![Nuget](http://img.shields.io/nuget/v/Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf.svg?maxAge=10800)](https://www.nuget.org/packages/Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf/) [![NuGet downloads](https://img.shields.io/nuget/dt/Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf.svg)](https://www.nuget.org/packages/Byndyusoft.AspNetCore.Mvc.Formatters.ProtoBuf/) 
 
-[Protocol Buffers](https://developers.google.com/protocol-buffers) are Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data – think XML, but smaller, faster, and simpler. 
+[Protocol Buffers](https://developers.google.com/protocol-buffers) are Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data â€“ think XML, but smaller, faster, and simpler. 
 ## Content negotiation
 Content negotiation occurs when the client specifies an `Accept` header. The default format used by ASP.NET Core is JSON. But client can specify `ProtoBuf` format:
 ```csharp
@@ -77,7 +77,7 @@ A detailed overview on how to contribute can be found in the [contributing guide
 Make sure you have installed all of the following prerequisites on your development machine:
 
 - Git - [Download & Install Git](https://git-scm.com/downloads). OSX and Linux machines typically have this already installed.
-- .NET Core (version 3.1 or higher) - [Download & Install .NET Core](https://dotnet.microsoft.com/download/dotnet-core/3.1).
+- .NET (version 8.0 or higher) - [Download & Install .NET Core](https://dotnet.microsoft.com/download/dotnet/8.0).
 
 ## General folders layout
 
